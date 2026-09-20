@@ -7,6 +7,9 @@ public class FishingMinigame : MonoBehaviour
     //public FishClass fish; //This needs relies on the fish class existing.
     */
 
+    public GameObject camera;
+    public GameObject minigameUI;
+
 
     /* Setup the fishing minigame
      *  First Setup the UI using worldspace as it moves.
@@ -17,6 +20,11 @@ public class FishingMinigame : MonoBehaviour
     */
     public void StartTheCatch(int depth, GameObject fishObj)
     {
+
+
+
+
+
 
     }
 
