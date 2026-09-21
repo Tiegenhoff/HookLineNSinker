@@ -36,6 +36,9 @@ public partial class FishingMinigame : MonoBehaviour
     */
     public void StartTheCatch(int depth, GameObject fishObj)
     {
+        if (depth > 0)
+            depth *= -1;
+
         // setup fish
         FishSetup(depth, fishObj);
 
@@ -78,6 +81,10 @@ public partial class FishingMinigame : MonoBehaviour
 
         // movefishing rod up along with fishGameobject
         fishingLine.transform.localPosition += new Vector3(0, 35, 0);
+
+        // start
+        currentDepth = depth;
+        StartCoroutine(FishingGo());
     }
 
 
