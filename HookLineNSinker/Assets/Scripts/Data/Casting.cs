@@ -74,6 +74,9 @@ namespace HookLineNSinker
         // Stores the currently running coroutine so that we can stop it when necessary
         private Coroutine castingCoroutine;
 
+        // Stores a reference to the separate catch function script
+        [SerializeField] private CatchFunction catchFunction;
+
         // Starts the casting process using the depth provided by the caller
         public void Cast(int depth)
         {
@@ -85,6 +88,16 @@ namespace HookLineNSinker
 
                 // Clears the reference to the old cororutine because it is no longer running
                 castingCoroutine = null;
+            }
+
+            // Checks whether a catch function has been assigned in the Unity inspector
+            if (catchFunction == null)
+            {
+                // Prints a warning so we know the catch function reference is missing
+                Debug.LogWarning("CastingFunction does not have a CatchFunction assigned.");
+
+                // Stops the casting process because there is nowhere to send the selected fish
+                return;
             }
 
             // Starts the casting coroutine and gives it the depth that the player is fishing at
@@ -113,7 +126,7 @@ namespace HookLineNSinker
                 if (selectedFish != null)
                 {
                     // Sends the depth and selected fish to the Catch function
-                    Catch(depth, selectedFish);
+                    catchFunction.Catch(depth, selectedFish);
                 }
             }
         }
@@ -241,13 +254,6 @@ namespace HookLineNSinker
 
             // Returns null because no matching depth group was found
             return null;
-        }
-
-        // Receives the depth and fish selected by the casting process
-        private void Catch(int depth, fishclass fish)
-        {
-            // Prints the caught fish and depth to the Unity COnsole so the casting system can be tested
-            Debug.Log("Caught " + fish.gettitle() + " at depth " + depth + ".");
         }
 
         // Stops the current casting process when another script tell this object to stop casting
