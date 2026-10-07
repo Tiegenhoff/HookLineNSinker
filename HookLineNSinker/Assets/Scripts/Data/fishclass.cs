@@ -6,7 +6,7 @@ public class fishclass : MonoBehaviour
     public float catchrate;
     public float weight;
     public int money;
-    public  Rarity rarity;
+    public Rarity rarity;
    
     public fishclass(string title, float catchrate, float weight,int money)
     {

@@ -7,13 +7,13 @@ using UnityEngine.InputSystem;
 
 public partial class FishingMinigame : MonoBehaviour
 {
-    public int lineTension; // increases while not aligned with fish
+    private int lineTension; // increases while not aligned with fish
     private int fishStamina; // duration of struggle (current fishStamina
     public bool inPlay;
     private int lives; // 3 lives, regen 1 on skill check rounds that you don't fail
     private fishclass cfishClass;
 
-    //skill check
+    // skill check
     public GameObject checkObj;
     public GameObject checkRot;
     public GameObject pointerRot;
@@ -25,6 +25,10 @@ public partial class FishingMinigame : MonoBehaviour
      * Though should assumably be 180 and .25:90 meaning the rotation as to be within those past
      * So 36 degrees per .1 and 3.6 per .01 (duh its 1.0 and 360 degrees)
      */
+
+    // Rod alignment Fish Struggle
+    public Slider RodAlignment;
+    public GameObject RodHandle;
 
     /*
      * Start with skill check
@@ -41,14 +45,16 @@ public partial class FishingMinigame : MonoBehaviour
 
         inPlay = true;
         cfishClass = currentFish.GetComponent<fishclass>();
-        int stamMax = (int)(cfishClass.weight * 10);
+        int stamMax = (int)(cfishClass.weight * 3);
 
         totalChecks = 0; // as it goes up checks get harder
 
         while (inPlay)
         {
             // start skill check (getting them in a row give a bonus to the amount it travels upwards?)
+            checkObj.SetActive(true);
             yield return StartCoroutine(SkillRoutine());
+            checkObj.SetActive(false);
 
             // check for win
             if (camera.transform.position.y > -280f)
@@ -103,7 +109,6 @@ public partial class FishingMinigame : MonoBehaviour
 
     IEnumerator SkillCheck()
     {
-        checkObj.SetActive(true);
 
         // set random check size
         float checkFloat = Random.Range(.15f, .25f);
@@ -158,15 +163,19 @@ public partial class FishingMinigame : MonoBehaviour
 
     IEnumerator FishStrugle()
     {
-        bool struggle = true;
-
         // start coroutine for knob and line color change for red
 
-        while (struggle)
+        while (fishStamina > 0)
         {
+            // change position / rotation
+            float randChange = Random.Range(0, 100);
+            if (randChange < 35)
+            {
 
+            }
 
-            yield return null;
+            yield return new WaitForSeconds(1);
+            fishStamina--;
         }
 
         // end coroutine for knob and line color chng
@@ -177,7 +186,5 @@ public partial class FishingMinigame : MonoBehaviour
          * 
          */
     }
-
-
 
 }
