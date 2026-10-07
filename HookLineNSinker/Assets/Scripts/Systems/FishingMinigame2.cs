@@ -1,7 +1,9 @@
+using JetBrains.Annotations;
 using System.Collections;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public partial class FishingMinigame : MonoBehaviour
 {
@@ -12,9 +14,12 @@ public partial class FishingMinigame : MonoBehaviour
     private fishclass cfishClass;
 
     //skill check
+    public GameObject checkObj;
     public GameObject checkRot;
     public GameObject pointerRot;
     public Slider checkSize;
+    private int totalChecks;
+    private bool noFailure = true;
     /* For lining up the rotation check the rotation vs slider amt
      * say set it to .5 and check against rotation
      * Though should assumably be 180 and .25:90 meaning the rotation as to be within those past
@@ -32,39 +37,123 @@ public partial class FishingMinigame : MonoBehaviour
      */
     IEnumerator FishingGo()
     {
+        bool win = false;
+
         inPlay = true;
         cfishClass = currentFish.GetComponent<fishclass>();
-        int stamMax = (int)cfishClass.weight * 10;
+        int stamMax = (int)(cfishClass.weight * 10);
+
+        totalChecks = 0; // as it goes up checks get harder
 
         while (inPlay)
         {
             // start skill check (getting them in a row give a bonus to the amount it travels upwards?)
+            yield return StartCoroutine(SkillRoutine());
 
+            // check for win
+            if (camera.transform.position.y > -280f)
+            {
+                inPlay = false;
+                win = true;
+                break;
+            }
 
             // start struggle
             fishStamina = stamMax;
             yield return StartCoroutine(FishStrugle());
 
-
-
-
-
             yield return null;
         }
 
-    }
+        // this will be implemented later once more ui has been developed
+        if (win)
+        {
 
-    IEnumerator SkillRoutine()
-    {
-        while (true)
+        }
+        else
         {
 
         }
     }
 
+    IEnumerator SkillRoutine()
+    {
+        int checkCount = Random.Range(3, 7);
+        noFailure = true;
+
+        while (checkCount > 0)
+        {
+            // if win condition has already been met
+            if (camera.transform.position.y > -280f)
+            {
+                checkCount = 0;
+                break;
+            }
+
+            // skill check
+            yield return StartCoroutine(SkillCheck());
+
+            checkCount--;
+            yield return null;
+        }
+
+        if (noFailure && lives < 3)
+            lives++;
+    }
+
     IEnumerator SkillCheck()
     {
+        checkObj.SetActive(true);
 
+        // set random check size
+        float checkFloat = Random.Range(.15f, .25f);
+        float decreasePercentage = Random.Range(0, totalChecks + 1);
+        checkFloat *= 1f - (.1f * decreasePercentage);
+        
+        checkSize.value = checkFloat;
+        Debug.Log($"Check Value = {checkFloat}");
+
+        // set random rotation
+        float randRotation = Random.Range(0, 360);
+        checkRot.transform.rotation = Quaternion.Euler(0, 0, randRotation);
+
+        // consider setting a random speed later
+        float pointerSpeed = 100;
+
+        // giving the player a second to breathe
+        yield return new WaitForSeconds(1);
+
+        bool spinMeBaby = true;
+
+        while (spinMeBaby)
+        {
+            pointerRot.transform.Rotate(0, 0, pointerSpeed * Time.deltaTime);
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+                spinMeBaby = false;
+
+            yield return null;
+        }
+
+        // after check and effects
+        float pRotNum = pointerRot.transform.eulerAngles.z;
+        float cRotNum = checkRot.transform.eulerAngles.z;
+
+        Debug.Log($"Pointer = {pRotNum} \nCheck = {cRotNum}");
+
+        if (pRotNum !< cRotNum && (pRotNum - cRotNum) <= (cRotNum + (checkFloat * 360)))
+        {
+            Debug.Log("Win");
+            float height = 10; // this can be changed or edited down the line
+            camera.transform.position += new Vector3(0, height, 0);
+        }
+        else
+        {
+            Debug.Log("Lose");
+            noFailure = false;
+            lives--;
+        }
+
+        yield return new WaitForSeconds(1);
     }
 
     IEnumerator FishStrugle()
