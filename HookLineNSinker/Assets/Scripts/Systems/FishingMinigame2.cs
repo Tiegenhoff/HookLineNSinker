@@ -1,6 +1,4 @@
-using JetBrains.Annotations;
 using System.Collections;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -27,8 +25,8 @@ public partial class FishingMinigame : MonoBehaviour
      */
 
     // Rod alignment Fish Struggle
-    public Slider RodAlignment;
-    public GameObject RodHandle;
+    public Slider rodAlignment;
+    public GameObject rodHandle;
 
     /*
      * Start with skill check
@@ -46,6 +44,9 @@ public partial class FishingMinigame : MonoBehaviour
         inPlay = true;
         cfishClass = currentFish.GetComponent<fishclass>();
         int stamMax = (int)(cfishClass.weight * 3);
+        lineTension = 0; // breaks if it hits 10
+        rodHandle.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        lives = 3;
 
         totalChecks = 0; // as it goes up checks get harder
 
@@ -56,6 +57,13 @@ public partial class FishingMinigame : MonoBehaviour
             yield return StartCoroutine(SkillRoutine());
             checkObj.SetActive(false);
 
+            // check for failure
+            if (lives == 0)
+            {
+                inPlay = false;
+                win = false;
+                break;
+            }
             // check for win
             if (camera.transform.position.y > -280f)
             {
@@ -67,6 +75,14 @@ public partial class FishingMinigame : MonoBehaviour
             // start struggle
             fishStamina = stamMax;
             yield return StartCoroutine(FishStrugle());
+            
+            // check for failure
+            if (lineTension >= 10)
+            {
+                inPlay = false;
+                win = false;
+                break;
+            }
 
             yield return null;
         }
@@ -89,6 +105,12 @@ public partial class FishingMinigame : MonoBehaviour
 
         while (checkCount > 0)
         {
+            if (lives == 0)
+            {
+                checkCount = 0;
+                break;
+            }
+
             // if win condition has already been met
             if (camera.transform.position.y > -280f)
             {
@@ -114,7 +136,8 @@ public partial class FishingMinigame : MonoBehaviour
         float checkFloat = Random.Range(.15f, .25f);
         float decreasePercentage = Random.Range(0, totalChecks + 1);
         checkFloat *= 1f - (.1f * decreasePercentage);
-        
+        checkFloat = Mathf.Clamp(checkFloat, 0.05f, 0.25f);
+
         checkSize.value = checkFloat;
         Debug.Log($"Check Value = {checkFloat}");
 
@@ -145,7 +168,11 @@ public partial class FishingMinigame : MonoBehaviour
 
         Debug.Log($"Pointer = {pRotNum} \nCheck = {cRotNum}");
 
-        if (pRotNum !< cRotNum && (pRotNum - cRotNum) <= (cRotNum + (checkFloat * 360)))
+        // is the pointer within the check zone?
+        float zoneWidth = checkFloat * 360f;
+        float angleFromStart = (pRotNum - cRotNum + 360f) % 360f;
+
+        if (angleFromStart <= zoneWidth)
         {
             Debug.Log("Win");
             float height = 10; // this can be changed or edited down the line
@@ -158,6 +185,7 @@ public partial class FishingMinigame : MonoBehaviour
             lives--;
         }
 
+        totalChecks++;
         yield return new WaitForSeconds(1);
     }
 
@@ -167,11 +195,31 @@ public partial class FishingMinigame : MonoBehaviour
 
         while (fishStamina > 0)
         {
+            /*
+             * tension line increases by 1 when the knob rotation is over like 7 or 8
+             * likewise decrease by 1 when the knob rotation is under.
+             * if tension gets to 10 the line breaks and the fish escapes
+             */
+
+
+            /*if (rodHandle.transform.localRotation.z > 7 || rodHandle.transform.localRotation.z < -7)
+                lineTension++;*/
+            float handleAngle = Mathf.DeltaAngle( 0f, rodHandle.transform.localEulerAngles.z);
+
+            if (Mathf.Abs(handleAngle) > 7f)
+                lineTension++;
+
+            if (lineTension >= 10)
+                yield break;
+
+            // higher the tension closer to red it is.
+            rodHandle.GetComponent<Image>().color = new Color(1f, (1f - ((float)lineTension * .1f)), (1f - ((float)lineTension * .1f)), 1f);
+
             // change position / rotation
             float randChange = Random.Range(0, 100);
             if (randChange < 35)
             {
-
+                StartCoroutine(FishRotate());
             }
 
             yield return new WaitForSeconds(1);
@@ -187,4 +235,45 @@ public partial class FishingMinigame : MonoBehaviour
          */
     }
 
+    IEnumerator FishRotate()
+    {
+
+        // rotate the knob and therefore the fish on the line
+        float dur = .15f;
+        float timer = 0;
+
+        Quaternion start = rodHandle.transform.localRotation;
+
+        // pick the rotation based on the slider value
+        Quaternion end = getRotationDirection();
+        if (end == Quaternion.Euler(0, 0, 0))
+            yield break;
+
+        while (timer < dur)
+        {
+            timer += Time.deltaTime;
+
+            rodHandle.transform.localRotation = Quaternion.Lerp(start, end, timer / dur);
+
+            yield return null;
+        }
+
+        rodHandle.transform.localRotation = end;
+    }
+
+    private Quaternion getRotationDirection() // can end up changing this later for more dramatic distant rotations.
+    {
+        Quaternion rot = Quaternion.Euler(0, 0, 0);
+
+        int direction = 0;
+
+        if (rodAlignment.value <= 0.25f)
+            direction = 1; // left
+        else if (rodAlignment.value >= 0.75f)
+            direction = -1; // right
+        else
+            direction = Random.Range(0, 2) == 0 ? -1 : 1; // random
+
+        return rot = Quaternion.Euler(0, 0, 15f * direction);
+    }
 }
