@@ -9,7 +9,7 @@ public partial class FishingMinigame : MonoBehaviour
     private int fishStamina; // duration of struggle (current fishStamina
     public bool inPlay;
     private int lives; // 3 lives, regen 1 on skill check rounds that you don't fail
-    private fishclass cfishClass;
+    private Fishclass cfishClass;
 
     // skill check
     public GameObject checkObj;
@@ -42,7 +42,7 @@ public partial class FishingMinigame : MonoBehaviour
         bool win = false;
 
         inPlay = true;
-        cfishClass = currentFish.GetComponent<fishclass>();
+        cfishClass = currentFish.GetComponent<Fishclass>();
         int stamMax = (int)(cfishClass.weight * 3);
         lineTension = 0; // breaks if it hits 10
         rodHandle.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);

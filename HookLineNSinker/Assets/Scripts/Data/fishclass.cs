@@ -1,26 +1,26 @@
 using UnityEngine;
 
-public class fishclass : MonoBehaviour
+public class Fishclass : MonoBehaviour
 {
     public string title;
     public float catchrate;
     public float weight;
     public int money;
-    public  Rarity rarity;
+    public Rarity type;
    
-    public fishclass(string title, float catchrate, float weight,int money)
+    public Fishclass(string title, float catchrate, float weight,int money)
     {
         this.title = title;
         this.catchrate = catchrate;
         this.weight = weight;
         this.money = money;
-        Rarity ratity = new Rarity("Common", 1.0f);
-        rarity = ratity.randomrarity();
+        type = new Rarity("Common", 1.0f);
+        type = type.randomrarity();
     }
 
     public int getmoney()
     {
-        float newmoney = (money * rarity.getmutiplyer());
+        float newmoney = (money * type.getmutiplyer());
         money=(int)newmoney;
         return money;
     }
