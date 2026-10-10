@@ -21,7 +21,7 @@ public partial class FishingMinigame : MonoBehaviour
     public GameObject skillCheckG; // the dbd skill check gameobject
     public Slider skillCheckSlider; // the slider for the skill check to change how big the check range is.
 
-    public GameObject fishingLine; // p.s. raise up 35 once you reach optimal position.
+    //public GameObject fishingLine;
 
     public GameObject currentFish; // the current fish gobject
     public int currentDepth; // when the current depth would reach 0 you win. MAX 3400 rn
@@ -38,6 +38,9 @@ public partial class FishingMinigame : MonoBehaviour
     {
         if (depth > 0)
             depth *= -1;
+        
+        // -280 is the win condition range.
+        depth -= (depth > -280) ? -280 : 0;
 
         // setup fish
         FishSetup(depth, fishObj);
@@ -76,11 +79,12 @@ public partial class FishingMinigame : MonoBehaviour
         rodSlider.SetActive(true);
 
         // turn on fishObject
-        currentFish.transform.SetParent(minigameUI.transform);
-            // make transform up to the bait or specifically linePivot
+        currentFish.transform.SetParent(rodKnob.transform.GetChild(0).GetChild(0).GetChild(0));
+        // make transform up to the bait
+        StartCoroutine(FishRise());
 
         // movefishing rod up along with fishGameobject
-        fishingLine.transform.localPosition += new Vector3(0, 35, 0);
+        //fishingLine.transform.localPosition += new Vector3(0, 35, 0);
 
         // start
         currentDepth = depth;
@@ -93,5 +97,26 @@ public partial class FishingMinigame : MonoBehaviour
         currentFish = fishObj;
         currentFish.transform.position += new Vector3(0, depth, 0); // the z is likely to change
         currentFish.SetActive(true);
+
+    }
+
+    IEnumerator FishRise()
+    {
+        float dur = 1;
+        float timer = 0;
+
+        Vector3 start = currentFish.transform.position;
+        Vector3 end = Vector3.zero;
+
+        while (timer < dur)
+        {
+            timer += Time.deltaTime;
+
+            currentFish.transform.localPosition = Vector3.Lerp(start, end, timer / dur);
+
+            yield return null;
+        }
+
+        currentFish.transform.localPosition = end;
     }
 }
