@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9fcb2e9bc15f534299c5d9da84b20e0, type: 3}
+  m_Name: Depth_10_20
+  m_EditorClassIdentifier: Assembly-CSharp::DepthTable
+  minDepth: 10
+  maxDepth: 20
+  speciesList:
+  - {fileID: 11400000, guid: 05d50e72f2b799d4d8aad3689aab4320, type: 2}

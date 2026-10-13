@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4610ec3328b67c47bb16dfbd9c72f25, type: 3}
+  m_Name: GoldenTrout
+  m_EditorClassIdentifier: Assembly-CSharp::FishSpecies
+  speciesName: Golden Trout
+  weight: 1.25
+  rarity: {fileID: 0}
+  icon: {fileID: 7482667652216324306, guid: 30adefefeae847942a564aa44636e560, type: 3}
