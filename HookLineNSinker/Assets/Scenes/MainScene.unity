@@ -513,6 +513,118 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &838062860
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 838062864}
+  - component: {fileID: 838062863}
+  - component: {fileID: 838062862}
+  - component: {fileID: 838062861}
+  - component: {fileID: 838062865}
+  m_Layer: 0
+  m_Name: MainSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &838062861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838062860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfebdd37f4601548a93d31e4026d69c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HookLineNSinker.CastingFunction
+  fishByDepth:
+  - depth: -670
+    fish:
+    - fishType: 0
+      fish: {fileID: 7139309789152060239, guid: 5206954af7aaca549bed33922faea9a7, type: 3}
+  catchFunction: {fileID: 838062865}
+--- !u!114 &838062862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838062860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a9563f8ca4c864ea0d7d31c4a2b5c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishingMinigame
+  camera: {fileID: 330585543}
+  minigameUI: {fileID: 273684557885353665}
+  rodSlider: {fileID: 7801733027472594718}
+  rodKnob: {fileID: 196168012900997643}
+  skillCheckG: {fileID: 9210830874745230976}
+  skillCheckSlider: {fileID: 8523653486444494317}
+  currentFish: {fileID: 0}
+  currentDepth: 0
+  inPlay: 0
+  checkObj: {fileID: 9210830874745230976}
+  checkRot: {fileID: 9210830874745230976}
+  pointerRot: {fileID: 7714836090728875929}
+  checkSize: {fileID: 8523653486444494317}
+  rodAlignment: {fileID: 8835542421352714296}
+  rodHandle: {fileID: 196168012900997643}
+--- !u!114 &838062863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838062860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bec234ed7596e26478d0cbd6e905d3cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainSystem
+  castingFunction: {fileID: 838062861}
+  fishingMinigame: {fileID: 838062862}
+  depth: -670
+  pause: 0
+  currentFishingRod: {fileID: 0}
+  currentLure: {fileID: 0}
+  currentBait: []
+--- !u!4 &838062864
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838062860}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 174.94608, y: -571.8412, z: 0.00051}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &838062865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838062860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9562d5386740b8b4ebdb7c9d41e7815d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HookLineNSinker.CatchFunction
+  fishingMinigame: {fileID: 838062862}
 --- !u!1 &937306997
 GameObject:
   m_ObjectHideFlags: 0
@@ -4249,6 +4361,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 838062863}
+        m_TargetAssemblyTypeName: MainSystem, Assembly-CSharp
+        m_MethodName: BeginPlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7279807250449115663
 GameObject:
   m_ObjectHideFlags: 0
@@ -5318,3 +5442,4 @@ SceneRoots:
   - {fileID: 3883657778798864841}
   - {fileID: 3036434535701599731}
   - {fileID: 530213906}
+  - {fileID: 838062864}

@@ -26,7 +26,6 @@ public partial class FishingMinigame : MonoBehaviour
     public GameObject currentFish; // the current fish gobject
     public int currentDepth; // when the current depth would reach 0 you win. MAX 3400 rn
 
-
     /* Setup the fishing minigame
      *  First Setup the UI using worldspace as it moves.
      *  Second, make sure the fish is in place and make it connect to the line
@@ -36,14 +35,22 @@ public partial class FishingMinigame : MonoBehaviour
     */
     public void StartTheCatch(int depth, GameObject fishObj)
     {
+        Debug.Log($"StartingCatch!!!");
+        inPlay = true; // ex
         if (depth > 0)
             depth *= -1;
         
         // -280 is the win condition range.
-        depth -= (depth > -280) ? -280 : 0;
+        depth += (depth > -280) ? -280 : 0;
 
         // setup fish
         FishSetup(depth, fishObj);
+
+        if (fishObj == null)
+        {
+            Debug.Log("[!!!] fishObj is null.");
+            return;
+        }
 
         // move the camera to starting depth
         StartCoroutine(MoveCameraDown(depth));
@@ -68,7 +75,7 @@ public partial class FishingMinigame : MonoBehaviour
         {
             time += Time.deltaTime;
             float t = time / duration;
-
+            
             camera.transform.position = Vector3.Lerp(start, end, t);
 
             yield return null;

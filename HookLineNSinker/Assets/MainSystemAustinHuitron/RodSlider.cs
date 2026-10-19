@@ -121,7 +121,7 @@ public class RodSlider : MonoBehaviour, IPointerDownHandler, IDragHandler
             }
         }
         
-        Debug.Log("Calculated Value: " + closestValue);
+        //Debug.Log("Calculated Value: " + closestValue);
         
         slider.SetValueWithoutNotify(closestValue);
         MoveKnob(closestValue);

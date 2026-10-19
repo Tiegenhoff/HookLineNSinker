@@ -12,10 +12,10 @@ namespace HookLineNSinker
     public static class CastingConstants
     {
         // Stores the shortest possible amount of time that the casting function can wait
-        public const float MIN_WAIT_SECONDS = 15f;
+        public const float MIN_WAIT_SECONDS = 8f;
 
         // Stores the longest ppossible amount of time that the casting function can wait
-        public const float MAX_WAIT_SECONDS = 30f;
+        public const float MAX_WAIT_SECONDS = 15f;
 
         // Stores the smallest possible value that the random catch roll can produce
         public const float MIN_ROLL_VALUE = 0f;

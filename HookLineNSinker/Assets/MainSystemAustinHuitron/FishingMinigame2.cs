@@ -41,7 +41,7 @@ public partial class FishingMinigame : MonoBehaviour
     {
         bool win = false;
 
-        inPlay = true;
+        //inPlay = true; ex
         cfishClass = currentFish.GetComponent<Fishclass>();
         int stamMax = (int)(cfishClass.weight * 3);
         lineTension = 0; // breaks if it hits 10
@@ -96,6 +96,8 @@ public partial class FishingMinigame : MonoBehaviour
         {
 
         }
+        // return to the surface
+        StartCoroutine(ReturnToSurface(.15f));
     }
 
     IEnumerator SkillRoutine()
@@ -275,5 +277,28 @@ public partial class FishingMinigame : MonoBehaviour
             direction = Random.Range(0, 2) == 0 ? -1 : 1; // random
 
         return rot = Quaternion.Euler(0, 0, 15f * direction);
+    }
+
+    // return camera to defaut position
+    private IEnumerator ReturnToSurface(float dur)
+    {
+        float timer = 0;
+
+        Vector3 start = camera.transform.position;
+        Vector3 end = new Vector3(0, 0, -695);
+        
+        while (timer < dur)
+        {
+            timer += Time.deltaTime;
+
+            camera.transform.position = Vector3.Lerp(start, end, timer / dur);
+
+            yield return null;
+        }
+
+        camera.transform.position = end;
+
+        // turn off fishing ui
+        minigameUI.SetActive(false);
     }
 }
