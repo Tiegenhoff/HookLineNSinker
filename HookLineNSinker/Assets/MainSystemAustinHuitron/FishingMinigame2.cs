@@ -147,6 +147,9 @@ public partial class FishingMinigame : MonoBehaviour
         // set random rotation
         float randRotation = Random.Range(0, 360);
         checkRot.transform.rotation = Quaternion.Euler(0, 0, randRotation);
+        
+        randRotation = Random.Range(0, 360);
+        pointerRot.transform.rotation = Quaternion.Euler(0, 0, randRotation);
 
         // set random position
 
@@ -175,7 +178,8 @@ public partial class FishingMinigame : MonoBehaviour
 
         // is the pointer within the check zone?
         float zoneWidth = checkFloat * 360f;
-        float angleFromStart = (pRotNum - cRotNum + 360f) % 360f;
+        //float angleFromStart = (pRotNum - cRotNum + 360f) % 360f;
+        float angleFromStart = (cRotNum - pRotNum + 360f) % 360f;
 
         if (angleFromStart <= zoneWidth)
         {
@@ -200,6 +204,9 @@ public partial class FishingMinigame : MonoBehaviour
         
         int fS = fishStamina * 3; // perhaps make the multiplier a modifier later on?
 
+        // decrease lineTension
+        lineTension = (lineTension > 5) ? Random.Range(0, 4) : 0;
+
         while (fS > 0)
         {
             /*
@@ -215,8 +222,6 @@ public partial class FishingMinigame : MonoBehaviour
 
             if (Mathf.Abs(handleAngle) > 7f)
                 lineTension++;
-            else
-                lineTension--;
 
             if (lineTension >= 10)
                 yield break;
