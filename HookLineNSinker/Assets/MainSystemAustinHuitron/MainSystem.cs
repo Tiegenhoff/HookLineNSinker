@@ -73,3 +73,5 @@ public class MainSystem : MonoBehaviour
 }
 
 // Note to self: Don't forget to fix the handle rotation when slidiing
+// Also fix the Skill Check position
+// Also add a click to start the fishing process

@@ -18,6 +18,7 @@ public partial class FishingMinigame : MonoBehaviour
     public Slider checkSize;
     private int totalChecks;
     private bool noFailure = true;
+    public float pointerSpeed = 200;
     /* For lining up the rotation check the rotation vs slider amt
      * say set it to .5 and check against rotation
      * Though should assumably be 180 and .25:90 meaning the rotation as to be within those past
@@ -147,8 +148,10 @@ public partial class FishingMinigame : MonoBehaviour
         float randRotation = Random.Range(0, 360);
         checkRot.transform.rotation = Quaternion.Euler(0, 0, randRotation);
 
+        // set random position
+
         // consider setting a random speed later
-        float pointerSpeed = 100;
+        //float pointerSpeed = 100;
 
         // giving the player a second to breathe
         yield return new WaitForSeconds(1);
@@ -194,8 +197,10 @@ public partial class FishingMinigame : MonoBehaviour
     IEnumerator FishStrugle()
     {
         // start coroutine for knob and line color change for red
+        
+        int fS = fishStamina * 3; // perhaps make the multiplier a modifier later on?
 
-        while (fishStamina > 0)
+        while (fS > 0)
         {
             /*
              * tension line increases by 1 when the knob rotation is over like 7 or 8
@@ -210,6 +215,8 @@ public partial class FishingMinigame : MonoBehaviour
 
             if (Mathf.Abs(handleAngle) > 7f)
                 lineTension++;
+            else
+                lineTension--;
 
             if (lineTension >= 10)
                 yield break;
@@ -224,8 +231,8 @@ public partial class FishingMinigame : MonoBehaviour
                 StartCoroutine(FishRotate());
             }
 
-            yield return new WaitForSeconds(1);
-            fishStamina--;
+            yield return new WaitForSeconds(.5f);
+            fS--;
         }
 
         // end coroutine for knob and line color chng
