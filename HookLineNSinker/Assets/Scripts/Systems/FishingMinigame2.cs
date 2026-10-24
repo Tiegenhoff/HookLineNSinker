@@ -18,6 +18,7 @@ public partial class FishingMinigame : MonoBehaviour
     public Slider checkSize;
     private int totalChecks;
     private bool noFailure = true;
+    public float pointerSpeed = 200;
     /* For lining up the rotation check the rotation vs slider amt
      * say set it to .5 and check against rotation
      * Though should assumably be 180 and .25:90 meaning the rotation as to be within those past
@@ -41,7 +42,7 @@ public partial class FishingMinigame : MonoBehaviour
     {
         bool win = false;
 
-        inPlay = true;
+        //inPlay = true; ex
         cfishClass = currentFish.GetComponent<Fishclass>();
         int stamMax = (int)(cfishClass.weight * 3);
         lineTension = 0; // breaks if it hits 10
@@ -96,6 +97,8 @@ public partial class FishingMinigame : MonoBehaviour
         {
 
         }
+        // return to the surface
+        StartCoroutine(ReturnToSurface(.15f));
     }
 
     IEnumerator SkillRoutine()
@@ -138,15 +141,22 @@ public partial class FishingMinigame : MonoBehaviour
         checkFloat *= 1f - (.1f * decreasePercentage);
         checkFloat = Mathf.Clamp(checkFloat, 0.05f, 0.25f);
 
+        float slowSpeed = (checkFloat < .10f) ? 1.5f : 1f;
+
         checkSize.value = checkFloat;
         Debug.Log($"Check Value = {checkFloat}");
 
         // set random rotation
         float randRotation = Random.Range(0, 360);
         checkRot.transform.rotation = Quaternion.Euler(0, 0, randRotation);
+        
+        randRotation = Random.Range(0, 360);
+        pointerRot.transform.rotation = Quaternion.Euler(0, 0, randRotation);
+
+        // set random position
 
         // consider setting a random speed later
-        float pointerSpeed = 100;
+        //float pointerSpeed = 100;
 
         // giving the player a second to breathe
         yield return new WaitForSeconds(1);
@@ -155,7 +165,7 @@ public partial class FishingMinigame : MonoBehaviour
 
         while (spinMeBaby)
         {
-            pointerRot.transform.Rotate(0, 0, pointerSpeed * Time.deltaTime);
+            pointerRot.transform.Rotate(0, 0, (pointerSpeed / slowSpeed) * Time.deltaTime);
             if (Mouse.current.leftButton.wasPressedThisFrame)
                 spinMeBaby = false;
 
@@ -170,12 +180,13 @@ public partial class FishingMinigame : MonoBehaviour
 
         // is the pointer within the check zone?
         float zoneWidth = checkFloat * 360f;
-        float angleFromStart = (pRotNum - cRotNum + 360f) % 360f;
+        //float angleFromStart = (pRotNum - cRotNum + 360f) % 360f;
+        float angleFromStart = (cRotNum - pRotNum + 360f) % 360f;
 
         if (angleFromStart <= zoneWidth)
         {
             Debug.Log("Win");
-            float height = 10; // this can be changed or edited down the line
+            float height = (noFailure) ? 25 : 15; // this can be changed or edited down the line
             camera.transform.position += new Vector3(0, height, 0);
         }
         else
@@ -192,8 +203,13 @@ public partial class FishingMinigame : MonoBehaviour
     IEnumerator FishStrugle()
     {
         // start coroutine for knob and line color change for red
+        
+        int fS = fishStamina * 3; // perhaps make the multiplier a modifier later on?
 
-        while (fishStamina > 0)
+        // decrease lineTension
+        lineTension = (lineTension > 5) ? Random.Range(0, 4) : 0;
+
+        while (fS > 0)
         {
             /*
              * tension line increases by 1 when the knob rotation is over like 7 or 8
@@ -222,8 +238,8 @@ public partial class FishingMinigame : MonoBehaviour
                 StartCoroutine(FishRotate());
             }
 
-            yield return new WaitForSeconds(1);
-            fishStamina--;
+            yield return new WaitForSeconds(.75f);
+            fS--;
         }
 
         // end coroutine for knob and line color chng
@@ -275,5 +291,28 @@ public partial class FishingMinigame : MonoBehaviour
             direction = Random.Range(0, 2) == 0 ? -1 : 1; // random
 
         return rot = Quaternion.Euler(0, 0, 15f * direction);
+    }
+
+    // return camera to defaut position
+    private IEnumerator ReturnToSurface(float dur)
+    {
+        float timer = 0;
+
+        Vector3 start = camera.transform.position;
+        Vector3 end = new Vector3(0, 0, -695);
+        
+        while (timer < dur)
+        {
+            timer += Time.deltaTime;
+
+            camera.transform.position = Vector3.Lerp(start, end, timer / dur);
+
+            yield return null;
+        }
+
+        camera.transform.position = end;
+
+        // turn off fishing ui
+        minigameUI.SetActive(false);
     }
 }

@@ -12,8 +12,21 @@ public class RodSlider : MonoBehaviour, IPointerDownHandler, IDragHandler
     public GameObject[] pointsOBJ;
     private List<Transform> points;
 
+    // rotation
+    [SerializeField] private float degreesPerSliderUnit = 60f;
+    [SerializeField] private float rotationSpeed = 180f;
+
+    private float previousSliderValue;
+    private float startingAngle;
+    private float pendingRotation;
+
     private void Start()
     {
+        // setup rotation
+        previousSliderValue = slider.value;
+        startingAngle = knob.eulerAngles.z;
+        //targetAngle = startingAngle;
+
         // Setup transform points
         points = new List<Transform>();
         foreach (var p in pointsOBJ)
@@ -46,17 +59,13 @@ public class RodSlider : MonoBehaviour, IPointerDownHandler, IDragHandler
         Transform pointA = points[pointIndex];
         Transform pointB = points[pointIndex + 1];
 
-        knob.position = Vector3.Lerp(
-            pointA.position,
-            pointB.position,
-            t
-        );
+        knob.position = Vector3.Lerp( pointA.position, pointB.position, t);
 
-        knob.rotation = Quaternion.Lerp(
-            pointA.rotation,
-            pointB.rotation,
-            t
-        );
+        //knob.rotation = Quaternion.Lerp(pointA.rotation, pointB.rotation, t);
+        float sliderChange = value - previousSliderValue;
+        pendingRotation -= sliderChange * degreesPerSliderUnit;
+        previousSliderValue = value;
+
     }
 
     #region knobControls
@@ -89,23 +98,16 @@ public class RodSlider : MonoBehaviour, IPointerDownHandler, IDragHandler
             //Vector2 pointA = cam.WorldToScreenPoint(points[i].position);
             //Vector2 pointB = cam.WorldToScreenPoint(points[i + 1].position);
 
-            Vector2 pointA = RectTransformUtility.WorldToScreenPoint(
-                canvasCamera,
-                points[i].position
-            );
+            Vector2 pointA = RectTransformUtility.WorldToScreenPoint( canvasCamera, points[i].position );
 
-            Vector2 pointB = RectTransformUtility.WorldToScreenPoint(
-                canvasCamera,
-                points[i + 1].position
-            );
+            Vector2 pointB = RectTransformUtility.WorldToScreenPoint( canvasCamera, points[i + 1].position );
 
             Vector2 pathLine = pointB - pointA;
 
             if (pathLine.sqrMagnitude == 0f)
                 continue;
 
-            float t = Vector2.Dot(mousePosition - pointA, pathLine)
-                      / pathLine.sqrMagnitude;
+            float t = Vector2.Dot(mousePosition - pointA, pathLine) / pathLine.sqrMagnitude;
 
             t = Mathf.Clamp01(t);
 
@@ -121,7 +123,7 @@ public class RodSlider : MonoBehaviour, IPointerDownHandler, IDragHandler
             }
         }
         
-        Debug.Log("Calculated Value: " + closestValue);
+        //Debug.Log("Calculated Value: " + closestValue);
         
         slider.SetValueWithoutNotify(closestValue);
         MoveKnob(closestValue);
@@ -132,4 +134,32 @@ public class RodSlider : MonoBehaviour, IPointerDownHandler, IDragHandler
     {
         slider.onValueChanged.RemoveListener(MoveKnob);
     }
+
+    // for rotation
+    private void Update()
+    {
+        // No player movement left to apply.
+        if (pendingRotation == 0f)
+            return;
+
+        // Apply a small portion of the player's requested rotation.
+        float step = Mathf.MoveTowards( 0f, pendingRotation, rotationSpeed * Time.deltaTime );
+
+        pendingRotation -= step;
+
+        // Read the actual rotation, including the other script's changes.
+        float currentOffset = Mathf.DeltaAngle( startingAngle, knob.eulerAngles.z );
+
+        float newOffset = Mathf.Clamp( currentOffset + step, -30f, 30f );
+        knob.rotation = Quaternion.Euler( 0f, 0f, startingAngle + newOffset );
+
+        // Discard movement pushing beyond the limit.
+        if ((newOffset >= 30f && pendingRotation > 0f) || (newOffset <= -30f && pendingRotation < 0f))
+        {
+            pendingRotation = 0f;
+        }
+
+    }
+
+
 }
