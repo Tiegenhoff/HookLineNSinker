@@ -51,6 +51,9 @@ public partial class FishingMinigame : MonoBehaviour
 
         totalChecks = 0; // as it goes up checks get harder
 
+        // start height increase for skillCheck
+        Coroutine cameraMoving = StartCoroutine(MoveUpwards());
+
         while (inPlay)
         {
             // start skill check (getting them in a row give a bonus to the amount it travels upwards?)
@@ -98,6 +101,7 @@ public partial class FishingMinigame : MonoBehaviour
 
         }
         // return to the surface
+        StopCoroutine(cameraMoving);
         StartCoroutine(ReturnToSurface(.15f));
     }
 
@@ -134,7 +138,6 @@ public partial class FishingMinigame : MonoBehaviour
 
     IEnumerator SkillCheck()
     {
-
         // set random check size
         float checkFloat = Random.Range(.15f, .25f);
         float decreasePercentage = Random.Range(0, totalChecks + 1);
@@ -186,8 +189,9 @@ public partial class FishingMinigame : MonoBehaviour
         if (angleFromStart <= zoneWidth)
         {
             Debug.Log("Win");
-            float height = (noFailure) ? 25 : 15; // this can be changed or edited down the line
-            camera.transform.position += new Vector3(0, height, 0);
+            height = (noFailure) ? 25 : 15; // this can be changed or edited down the line
+            
+            //camera.transform.position += new Vector3(0, height, 0);
         }
         else
         {
@@ -314,5 +318,43 @@ public partial class FishingMinigame : MonoBehaviour
 
         // turn off fishing ui
         minigameUI.SetActive(false);
+    }
+
+    float height;
+    private IEnumerator MoveUpwards()
+    {
+        bool weFly = true;
+
+        while (weFly)
+        {
+            if (camera.transform.position.y >= 0)
+            {
+                height = 0;
+
+                weFly = false;
+                yield return null;
+            }
+
+            if (height > 0)
+            {
+                float timer = 0;
+
+                Vector3 start = camera.transform.position;
+                Vector3 end = start + new Vector3(0, 1, 0);
+
+                while (timer < .05f)
+                {
+                    timer += Time.deltaTime;
+
+                    camera.transform.position = Vector3.Lerp(start, end, timer / .05f);
+
+                    yield return null;
+                }
+
+                height--;
+                camera.transform.position = end;
+            }
+            yield return null;
+        }
     }
 }
