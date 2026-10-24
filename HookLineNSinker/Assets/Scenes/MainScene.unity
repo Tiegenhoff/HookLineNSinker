@@ -666,7 +666,11 @@ MonoBehaviour:
   - depth: -670
     fish:
     - fishType: 0
-      fish: {fileID: 7139309789152060239, guid: 5206954af7aaca549bed33922faea9a7, type: 3}
+      fish: {fileID: 278584943049550983, guid: e4764ca9c8314e845b8c8c63b77275b6, type: 3}
+    - fishType: 0
+      fish: {fileID: 1220885317663146805, guid: ba0ba3a68a65a324287ec022e7b3496c, type: 3}
+    - fishType: 0
+      fish: {fileID: 2249364832170716062, guid: eda6428dc060d4f4ead2ebfddeaaffff, type: 3}
   catchFunction: {fileID: 838062865}
 --- !u!114 &838062862
 MonoBehaviour:
@@ -1089,7 +1093,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1669271485}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7071068, z: 0.7071068, w: 0}
+  m_LocalRotation: {x: 0, y: -0.70710677, z: 0.70710677, w: 0}
   m_LocalPosition: {x: 92.85278, y: -14.87796, z: -0.000030517578}
   m_LocalScale: {x: 89.99998, y: 1, z: 89.999985}
   m_ConstrainProportionsScale: 0
@@ -1187,7 +1191,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d29259fab3d0141a40834688ba2c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkyRotate
-  spinSpeed: 2.5
+  spinSpeed: -2.5
+  lad: {fileID: 0}
+  dock: {fileID: 0}
 --- !u!224 &2765283101926765
 RectTransform:
   m_ObjectHideFlags: 0
