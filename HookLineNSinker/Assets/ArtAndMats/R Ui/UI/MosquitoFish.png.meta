@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 90c718cbd104f254e9eca6767170516f
+guid: 0a109cefae341494ebdb728abe2e16ad
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Untitled48_20260904204222_0
+      name: MosquitoFish_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1030
-        height: 620
+        width: 1580
+        height: 920
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +112,96 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7b384c7eb44647c4d9e5828b334ac9e0
-      internalID: -714429750
+      spriteID: ba1161e66741238408e885e948a28052
+      internalID: -452801851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MosquitoFish_1
+      rect:
+        serializedVersion: 2
+        x: 1591
+        y: 616
+        width: 24
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fcde1fa8694e6bf48a5288f28fb8901d
+      internalID: -2029986531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MosquitoFish_2
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 178
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd8bad3976f8aa7459e993021162cc70
+      internalID: -273416340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MosquitoFish_3
+      rect:
+        serializedVersion: 2
+        x: 805
+        y: 55
+        width: 19
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0471547e647d3f64b87a775f4a870348
+      internalID: -2039103963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MosquitoFish_4
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 34
+        width: 5
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b58a24f792fc93748bb9e5730f62c892
+      internalID: -1790719554
       vertices: []
       indices: 
       edges: []
@@ -122,7 +210,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: c10d69387887a504bbbc1a7a4bdea7c1
+    spriteID: 639dd9dc063ec814989dc9ba9109a01d
     internalID: 0
     vertices: []
     indices: 
@@ -134,7 +222,11 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Untitled48_20260904204222_0: -714429750
+      MosquitoFish_0: -452801851
+      MosquitoFish_1: -2029986531
+      MosquitoFish_2: -273416340
+      MosquitoFish_3: -2039103963
+      MosquitoFish_4: -1790719554
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
