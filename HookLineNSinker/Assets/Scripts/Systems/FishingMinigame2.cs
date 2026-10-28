@@ -100,6 +100,9 @@ public partial class FishingMinigame : MonoBehaviour
         {
 
         }
+        // stop animation
+        ladAnimatior.Play("LadIdle");
+
         // return to the surface
         StopCoroutine(cameraMoving);
         StartCoroutine(ReturnToSurface(.15f));

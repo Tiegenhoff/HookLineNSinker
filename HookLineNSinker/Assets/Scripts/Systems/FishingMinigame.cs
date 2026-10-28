@@ -26,6 +26,10 @@ public partial class FishingMinigame : MonoBehaviour
     public GameObject currentFish; // the current fish gobject
     public int currentDepth; // when the current depth would reach 0 you win. MAX 3400 rn
 
+    [Header("AnimationControl")]
+    public Animator ladAnimatior;
+    private bool startAction = false;
+
     /* Setup the fishing minigame
      *  First Setup the UI using worldspace as it moves.
      *  Second, make sure the fish is in place and make it connect to the line
@@ -35,11 +39,41 @@ public partial class FishingMinigame : MonoBehaviour
     */
     public void StartTheCatch(int depth, GameObject fishObj)
     {
+        Debug.Log($"Waiting To Start The Catch!!!");
+        startAction = false;
+        StartCoroutine(WaitForButtonPress(depth, fishObj));
+    }
+
+    // get the start press
+    public void InteractWithRod()
+    {
+        startAction = true;
+    }
+
+    // waiting for the press
+    private IEnumerator WaitForButtonPress(int depth, GameObject fishObj)
+    {
+        // change the animation
+        ladAnimatior.Play("ladBiteraFish");
+
+        while (!startAction)
+        {
+            yield return null;
+        }
+
+        ActuallyStartTheCatch(depth, fishObj);
+        startAction = false;
+        yield return null;
+    }
+
+    // continue to start
+    private void ActuallyStartTheCatch(int depth, GameObject fishObj)
+    {
         Debug.Log($"StartingCatch!!!");
         inPlay = true; // ex
         if (depth > 0)
             depth *= -1;
-        
+
         // -280 is the win condition range.
         depth += (depth > -280) ? -280 : 0;
 
@@ -54,16 +88,14 @@ public partial class FishingMinigame : MonoBehaviour
 
         // move the camera to starting depth
         StartCoroutine(MoveCameraDown(depth));
-        
+
         // turn on the ui (still have to turn on specifc parts though
         minigameUI.SetActive(true);
     }
 
 
 
-
-
-    IEnumerator MoveCameraDown(int depth)
+    private IEnumerator MoveCameraDown(int depth)
     {
         Vector3 start = camera.transform.position;
         Vector3 end = new Vector3(start.x, depth, start.z);
