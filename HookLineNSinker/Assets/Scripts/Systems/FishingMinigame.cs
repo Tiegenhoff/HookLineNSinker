@@ -29,6 +29,8 @@ public partial class FishingMinigame : MonoBehaviour
     [Header("AnimationControl")]
     public Animator ladAnimatior;
     private bool startAction = false;
+    public GameObject catchButton;
+    public OpenSaysMe osm;
 
     /* Setup the fishing minigame
      *  First Setup the UI using worldspace as it moves.
@@ -56,6 +58,8 @@ public partial class FishingMinigame : MonoBehaviour
         // change the animation
         ladAnimatior.Play("ladBiteraFish");
 
+        catchButton.SetActive(true);
+
         while (!startAction)
         {
             yield return null;
@@ -63,6 +67,7 @@ public partial class FishingMinigame : MonoBehaviour
 
         ActuallyStartTheCatch(depth, fishObj);
         startAction = false;
+        catchButton.SetActive(false);
         yield return null;
     }
 

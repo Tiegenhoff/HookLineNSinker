@@ -94,7 +94,7 @@ public partial class FishingMinigame : MonoBehaviour
         // this will be implemented later once more ui has been developed
         if (win)
         {
-
+            osm.OpenMe(currentFish);
         }
         else
         {

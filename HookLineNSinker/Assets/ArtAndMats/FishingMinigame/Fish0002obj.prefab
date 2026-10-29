@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8761386423950819294}
   - component: {fileID: 1476105077788741463}
   - component: {fileID: 1220885317663146805}
+  - component: {fileID: 8232165202433921467}
   m_Layer: 5
   m_Name: Fish0002obj
   m_TagString: Untagged
@@ -89,8 +90,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fishclass
   title: Philirantix
-  catchrate: 25
-  weight: 8
+  catchrate: 15
+  weight: 2
   money: 0
   type: {fileID: 0}
   fishType: 0
+--- !u!114 &8232165202433921467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653284178325629694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea39b1917f72dbb4bbc7aecac2854604, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishFlavor
+  fishFlavor: A horse like fish known for horsing around. Often seen splashing water around.
