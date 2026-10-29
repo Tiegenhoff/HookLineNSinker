@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using Unity.VisualScripting;
 
 public partial class FishingMinigame : MonoBehaviour
 {
@@ -28,6 +29,9 @@ public partial class FishingMinigame : MonoBehaviour
     // Rod alignment Fish Struggle
     public Slider rodAlignment;
     public GameObject rodHandle;
+
+    [Header("UiExtra")]
+    public GameObject sideBarUi;
 
     /*
      * Start with skill check
@@ -98,7 +102,7 @@ public partial class FishingMinigame : MonoBehaviour
         }
         else
         {
-
+            sideBarUi.SetActive(true);
         }
         // stop animation
         ladAnimatior.Play("LadIdle");
@@ -107,6 +111,7 @@ public partial class FishingMinigame : MonoBehaviour
         StopCoroutine(cameraMoving);
         StartCoroutine(ReturnToSurface(.15f));
 
+        
         Destroy(currentFish);
     }
 
