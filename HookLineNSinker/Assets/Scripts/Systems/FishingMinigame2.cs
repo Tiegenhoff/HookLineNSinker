@@ -106,6 +106,8 @@ public partial class FishingMinigame : MonoBehaviour
         // return to the surface
         StopCoroutine(cameraMoving);
         StartCoroutine(ReturnToSurface(.15f));
+
+        Destroy(currentFish);
     }
 
     IEnumerator SkillRoutine()
