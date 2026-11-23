@@ -170,10 +170,33 @@ namespace HookLineNSinker
                 // Gets the actual fishclass component from the current fish entry
                 Fishclass currentFish = fishEntry.Fish;
 
+                // Checks whether the fish belongs to the requested depth
+                if ((int)currentFish.fishingDepth != depth)
+                {
+                    // Prints a warning if the fish is assigned to the wrong depth
+                    Debug.LogWarning("Fish depth does not match its assigned depth list.");
+
+                    // Skips this fish and checks the next entry
+                    continue;
+                }
+
                 // Checks whether the actual fishclass reference is missing
                 if (currentFish == null)
                 {
                     // Skips this entry because there is no actual fish to check
+                    continue;
+                }
+
+                // Converts the requested casting depth into its corresponding tier
+                FishingDepth requestedTier = FishingDepthUtility.GetTierFromDepth(depth);
+
+                // Checks whether the fish is assigned to the requested depth tier
+                if (currentFish.fishingDepth != requestedTier)
+                {
+                    // Prints a warning when a fish is placed in the wrong depth group
+                    Debug.LogWarning("Fish " + currentFish.title + " is assigned to the wrong depth.");
+
+                    // Skips this fish and continues checking the remaining entries
                     continue;
                 }
 

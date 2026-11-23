@@ -1,3 +1,4 @@
+using HookLineNSinker;
 using UnityEngine;
 
 public class Fishclass : MonoBehaviour
@@ -10,8 +11,11 @@ public class Fishclass : MonoBehaviour
 
     // added this (use an Enum for the different types but generally it'll be something like 1 = catfish)
     // anyways the important part is the number anyways the enum just makes it easier on us (don't worry about it too much)
-    public int fishType;
-   
+    // Identifies the species of this fish using your Fish enum
+    public Fish fishType;
+    // Identifies the depth tier where this fish belongs
+    public FishingDepth fishingDepth;
+    
     public Fishclass(string title, float catchrate, float weight,int money)
     {
         this.title = title;
@@ -40,6 +44,4 @@ public class Fishclass : MonoBehaviour
     {
         return weight;
     }
-
-
 }

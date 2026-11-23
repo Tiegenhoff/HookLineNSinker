@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+// Allows this script to access Unity's UI Slider component
+using UnityEngine.UI;
 
 public class MainSystem : MonoBehaviour
 {
@@ -70,6 +72,23 @@ public class MainSystem : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    // Updates the fishing depth using the selected depth tier
+    public void SetFishingDepth(HookLineNSinker.FishingDepth selectedTier)
+    {
+        // Converts the selected tier into its actual casting depth
+        depth = HookLineNSinker.FishingDepthUtility.GetDepthValue(selectedTier);
+
+        // Prints the selected depth so it can be checked in the Console
+        Debug.Log("Fishing depth changed to: " + depth);
+    }
+
+    // Returns the currently selected fishing depth
+    public int GetFishingDepth()
+    {
+        // Returns the depth currently stored by MainSystem
+        return depth;
     }
 
 }
