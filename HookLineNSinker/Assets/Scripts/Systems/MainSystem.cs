@@ -38,11 +38,13 @@ public class MainSystem : MonoBehaviour
     // call from the play button at the start
     public void BeginPlay()
     {
+        if (playLoop != null)
+            return;
         // call a load script function
         //blank
 
         // Begin loop
-        StartCoroutine(PlayLoop());
+        playLoop = StartCoroutine(PlayLoop());
 
     }
 
@@ -69,7 +71,7 @@ public class MainSystem : MonoBehaviour
             yield return null;
         }
     }
-    
+
 }
 
 // Note to self: Don't forget to fix the handle rotation when slidiing

@@ -9,9 +9,9 @@ namespace HookLineNSinker
     {
         // Stores a reference to the FishingMinigame script that will handle the catching minigame
         [SerializeField] private FishingMinigame fishingMinigame;
-        
+
         // Receives the depth and already-selected fish from the casting function
-        public void Catch(int depth, Fishclass selectedFish)
+        public bool Catch(int depth, Fishclass selectedFish)
         {
             // Checks whether the casting function failed to provide a fish
             if (selectedFish == null)
@@ -20,7 +20,7 @@ namespace HookLineNSinker
                 Debug.LogWarning("Catch function was called without a selected fish.");
 
                 // Stops this function because there is no fish to instantiate
-                return;
+                return false;
             }
 
             // Checks whether a FishingMinigame has been assigned in the Unity inspector
@@ -30,7 +30,7 @@ namespace HookLineNSinker
                 Debug.LogWarning("CatchFunction does not have a FishingMinigame assigned.");
 
                 // Stops the function because there is no minigame to start
-                return;
+                return false;
             }
 
             // Gets the GameObject that contains the selected fishclass component
@@ -52,11 +52,12 @@ namespace HookLineNSinker
                 Destroy(fish);
 
                 // Stops this function because the fish data is required by the minigame
-                return;
+                return false;
             }
 
             // Sends the instantiated fish, its fish data, and the fishing depth to the minigame
             CatchMinigameFunction(fish, fishData, depth);
+            return true;
         }
 
         // Receives all of the information that the catching minigame needs to begin

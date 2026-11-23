@@ -126,7 +126,11 @@ namespace HookLineNSinker
                 if (selectedFish != null)
                 {
                     // Sends the depth and selected fish to the Catch function
-                    catchFunction.Catch(depth, selectedFish);
+                    if (catchFunction.Catch(depth, selectedFish))
+                    {
+                        castingCoroutine = null;
+                        yield break;
+                    }
                 }
             }
         }

@@ -29,6 +29,7 @@ public partial class FishingMinigame : MonoBehaviour
     [Header("AnimationControl")]
     public Animator ladAnimatior;
     private bool startAction = false;
+    private bool waitingForCatch = false;
     public GameObject catchButton;
     public OpenSaysMe osm;
 
@@ -41,6 +42,22 @@ public partial class FishingMinigame : MonoBehaviour
     */
     public void StartTheCatch(int depth, GameObject fishObj)
     {
+        if (fishObj == null)
+        {
+            Debug.LogWarning("Cannot start a catch without a fish.");
+            return;
+        }
+
+        if (waitingForCatch || inPlay)
+        {
+            Debug.LogWarning("A catch is already in progress; discarding the extra fish.");
+            if (fishObj != currentFish)
+                Destroy(fishObj);
+            return;
+        }
+
+        waitingForCatch = true;
+        currentFish = fishObj;
         Debug.Log($"Waiting To Start The Catch!!!");
         startAction = false;
         StartCoroutine(WaitForButtonPress(depth, fishObj));
@@ -65,6 +82,7 @@ public partial class FishingMinigame : MonoBehaviour
             yield return null;
         }
 
+        waitingForCatch = false;
         ActuallyStartTheCatch(depth, fishObj);
         startAction = false;
         catchButton.SetActive(false);
@@ -112,7 +130,7 @@ public partial class FishingMinigame : MonoBehaviour
         {
             time += Time.deltaTime;
             float t = time / duration;
-            
+
             camera.transform.position = Vector3.Lerp(start, end, t);
 
             yield return null;
