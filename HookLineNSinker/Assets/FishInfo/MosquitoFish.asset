@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94cc5b3b02c7c0a4d8aae1976c938e6e, type: 3}
+  m_Name: MosquitoFish
+  m_EditorClassIdentifier: Assembly-CSharp::FishInfo
+  fishName: Mosquito Fish
+  fishImage: {fileID: 378325333, guid: 162f4604db6f22e45965c2009de522de, type: 3}
+  weightText: 1lb
+  description: Uses its Proboscis to stealthily feed off of larger fish.
